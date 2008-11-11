@@ -1,0 +1,24 @@
+FcgiStatus
+==========
+
+An FCGI version of the Howl plugin (http://github.com/nkallen/howl/tree/master)
+
+
+Example
+=======
+
+class ApplicationController < ActionController::Base
+  include FcgiStatus
+
+  … your other code.
+end
+
+And, if you would like a custom key in the process list rather than path:
+
+class YourController < ApplicationController
+  def fcgi_key
+    "a=#{@key1} ; b=#{@key2}"
+  end
+end
+
+Copyright (c) 2008 Matt Sanford. released under the MIT license
