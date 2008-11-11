@@ -13,12 +13,24 @@ class ApplicationController < ActionController::Base
   … your other code.
 end
 
-And, if you would like a custom key in the process list rather than path:
+In top or ps your process will look like:
+
+dispatch.fcgi (1/13m37.00s): last job: YourController#show GET (/bob.xml)
+
+If you would like a custom key in the process list rather than path you can define a method named fcgi_key. Be aware that this method will be called BEFORE the controller action so any fields used must be initialized in previous filter or within the fcgi_key method itself.
 
 class YourController < ApplicationController
   def fcgi_key
     "a=#{@key1} ; b=#{@key2}"
   end
 end
+
+Which will produce a process name like:
+
+dispatch.fcgi (1808/13m37.00s): last job: YourController#show GET (a=foo ; b=bar)
+
+WARNING: On many operating systems the process name cannot be changed to a value longer than the original command line. In order to work around this you can add change the #! line of your dispatch.fcgi like so:
+
+#!/usr/bin/ruby -I/non-existent-padding-directory-name  -I/non-existent-padding-directory-name -I/non-existent-padding-directory-name -I/non-existent-padding-directory-name 
 
 Copyright (c) 2008 Matt Sanford. released under the MIT license
