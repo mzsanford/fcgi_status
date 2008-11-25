@@ -29,6 +29,12 @@ Which will produce a process name like:
 
 dispatch.fcgi (1808/13m37.00s): last job: YourController#show GET (a=foo ; b=bar)
 
+You can also change FcgiStatus to display information in place of the process uptime:
+
+FcgiStatus.mode = :cpu           # Show the processes user and system cpu
+FcgiStatus.mode = :cpu_extended  # :cpu plus child process user and system cpu
+FcgiStatus.mode = :time          # the default display
+
 WARNING: On many operating systems the process name cannot be changed to a value longer than the original command line. In order to work around this you can add change the #! line of your dispatch.fcgi like so:
 
 #!/usr/bin/ruby -I/non-existent-padding-directory-name  -I/non-existent-padding-directory-name -I/non-existent-padding-directory-name -I/non-existent-padding-directory-name 

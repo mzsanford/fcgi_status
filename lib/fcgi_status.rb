@@ -2,9 +2,18 @@
 
 module FcgiStatus
   def self.included(controller)
+    $mode ||= :time
     controller.class_eval do
       around_filter :with_process_title unless RAILS_ENV == 'test'
     end
+  end
+
+  def self.mode
+    $mode
+  end
+
+  def self.mode=(sym)
+    $mode = sym
   end
 
   def with_process_title
@@ -31,7 +40,17 @@ module FcgiStatus
 
   def process_title
     $original_process_title ||= "dispatch.fcgi"
-    "#{$original_process_title} (#{$total_processed_requests}/#{display_time})"
+    if $mode == :time
+      "#{$original_process_title} (#{$total_processed_requests}/#{display_time})"
+    elsif $mode == :cpu
+      times = Process.times
+      "#{$original_process_title} (#{$total_processed_requests}/#{times.utime}usr #{times.stime}sys)"
+    elsif $mode == :cpu_extended
+      times = Process.times
+      "#{$original_process_title} (#{$total_processed_requests}/#{times.utime}usr #{times.stime}sys #{times.cutime}cusr #{times.cstime}csys)"
+    else
+      "#{$original_process_title} (invalid fcgi_status mode)"
+    end
   end
 
   def current_job

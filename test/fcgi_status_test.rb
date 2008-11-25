@@ -25,13 +25,35 @@ class FcgiStatusTest < Test::Unit::TestCase
     finish_process
   end
 
-  def test_finish_display
+  def test_finish_display_time
+    FcgiStatus.mode = :time
     start_process
     sleep(1)
     finish_process
     assert_match /last job/, $0
     # Contains requests/secs (no min, hr, day)
     assert_match /\d+\/\d+\.\d\ds/, $0
+  end
+
+  def test_finish_display_cpu
+    FcgiStatus.mode = :cpu
+    start_process
+    sleep(1)
+    finish_process
+    assert_match /last job/, $0
+    # Contains user cpu
+    assert_match /\d+\.\d+usr \d+\.\d+sys/, $0
+  end
+
+  # include child process cpu
+  def test_finish_display_cpu_extended
+    FcgiStatus.mode = :cpu_extended
+    start_process
+    sleep(1)
+    finish_process
+    assert_match /last job/, $0
+    # Contains user cpu
+    assert_match /\d+\.\d+usr \d+\.\d+sys \d+\.\d+cusr \d+\.\d+csys/, $0
   end
 end
 
