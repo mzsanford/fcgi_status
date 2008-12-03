@@ -39,4 +39,4 @@ WARNING: On many operating systems the process name cannot be changed to a value
 
 #!/usr/bin/ruby -I/non-existent-padding-directory-name  -I/non-existent-padding-directory-name -I/non-existent-padding-directory-name -I/non-existent-padding-directory-name 
 
-Copyright (c) 2008 Matt Sanford. released under the MIT license
+Copyright (c) 2008 Twitter, Inc. released under the MIT license
